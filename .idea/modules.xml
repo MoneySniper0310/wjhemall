@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/JavaWorkApplications.iml" filepath="$PROJECT_DIR$/.idea/JavaWorkApplications.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fastdfs-client-java-master/fastdfs-client-java.iml" filepath="$PROJECT_DIR$/fastdfs-client-java-master/fastdfs-client-java.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wjhemall-api/wjhemall-api.iml" filepath="$PROJECT_DIR$/wjhemall-api/wjhemall-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wjhemall-common-util/wjhemall-common-util.iml" filepath="$PROJECT_DIR$/wjhemall-common-util/wjhemall-common-util.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wjhemall-item-web/wjhemall-item-web.iml" filepath="$PROJECT_DIR$/wjhemall-item-web/wjhemall-item-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wjhemall-manage-service/wjhemall-manage-service.iml" filepath="$PROJECT_DIR$/wjhemall-manage-service/wjhemall-manage-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wjhemall-manage-web/wjhemall-manage-web.iml" filepath="$PROJECT_DIR$/wjhemall-manage-web/wjhemall-manage-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wjhemall-parent/wjhemall-parent.iml" filepath="$PROJECT_DIR$/wjhemall-parent/wjhemall-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wjhemall-service-util/wjhemall-service-util.iml" filepath="$PROJECT_DIR$/wjhemall-service-util/wjhemall-service-util.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wjhemall-user/wjhemall-user.iml" filepath="$PROJECT_DIR$/wjhemall-user/wjhemall-user.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wjhemall-user-service/wjhemall-user-service.iml" filepath="$PROJECT_DIR$/wjhemall-user-service/wjhemall-user-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wjhemall-user-web/wjhemall-user-web.iml" filepath="$PROJECT_DIR$/wjhemall-user-web/wjhemall-user-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wjhemall-web-util/wjhemall-web-util.iml" filepath="$PROJECT_DIR$/wjhemall-web-util/wjhemall-web-util.iml" />
+    </modules>
+  </component>
+</project>

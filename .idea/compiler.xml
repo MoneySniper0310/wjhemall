@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="wjhemall-user" />
+        <module name="wjhemall-service-util" />
+        <module name="wjhemall-user-service" />
+        <module name="wjhemall-api" />
+        <module name="fastdfs-client-java" />
+        <module name="wjhemall-manage-service" />
+        <module name="wjhemall-item-web" />
+        <module name="wjhemall-common-util" />
+        <module name="wjhemall-user-web" />
+        <module name="wjhemall-manage-web" />
+        <module name="wjhemall-web-util" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel target="8">
+      <module name="fastdfs-client-java" target="1.6" />
+      <module name="wjhemall-api" target="1.8" />
+      <module name="wjhemall-common-util" target="1.8" />
+      <module name="wjhemall-item-web" target="1.8" />
+      <module name="wjhemall-manage-service" target="1.8" />
+      <module name="wjhemall-manage-web" target="1.8" />
+      <module name="wjhemall-parent" target="1.8" />
+      <module name="wjhemall-service-util" target="1.8" />
+      <module name="wjhemall-user" target="1.8" />
+      <module name="wjhemall-user-service" target="1.8" />
+      <module name="wjhemall-user-web" target="1.8" />
+      <module name="wjhemall-web-util" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="wjhemall-common-util" options="" />
+      <module name="wjhemall-item-web" options="" />
+      <module name="wjhemall-manage-service" options="" />
+      <module name="wjhemall-manage-web" options="" />
+      <module name="wjhemall-service-util" options="" />
+      <module name="wjhemall-user" options="" />
+      <module name="wjhemall-user-service" options="" />
+      <module name="wjhemall-user-web" options="" />
+      <module name="wjhemall-web-util" options="" />
+    </option>
+  </component>
+</project>

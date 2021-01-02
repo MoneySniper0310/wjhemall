@@ -1,6 +1,7 @@
 package com.wjh.wjhemall.manage.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.alibaba.fastjson.JSON;
 import com.wjh.wjhemall.bean.PmsSkuAttrValue;
 import com.wjh.wjhemall.bean.PmsSkuImage;
 import com.wjh.wjhemall.bean.PmsSkuInfo;
@@ -10,9 +11,13 @@ import com.wjh.wjhemall.manage.mapper.PmsSkuImageMapper;
 import com.wjh.wjhemall.manage.mapper.PmsSkuInfoMapper;
 import com.wjh.wjhemall.manage.mapper.PmsSkuSaleAttrValueMapper;
 import com.wjh.wjhemall.service.SkuService;
+import com.wjh.wjhemall.util.RedisUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import redis.clients.jedis.Jedis;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class SkuServiceImpl implements SkuService {
@@ -28,6 +33,9 @@ public class SkuServiceImpl implements SkuService {
 
     @Autowired
     PmsSkuImageMapper pmsSkuImageMapper;
+
+    @Autowired
+    RedisUtil redisUtil;
 
     @Override
     public void saveSkuInfo(PmsSkuInfo pmsSkuInfo) {
@@ -60,14 +68,47 @@ public class SkuServiceImpl implements SkuService {
 
     @Override
     public PmsSkuInfo getSkuById(String skuId) {
+        PmsSkuInfo pmsSkuInfo = new PmsSkuInfo();
+        // 链接缓存
+        Jedis jedis = redisUtil.getJedis();
+        // 查询缓存
+        String skuKey = "sku:"+skuId+":info";
+        String skuJson = jedis.get(skuKey);
 
-        //链接缓存
+        if(StringUtils.isNotBlank(skuJson)){//if(skuJson!=null&&!skuJson.equals(""))
+            pmsSkuInfo = JSON.parseObject(skuJson, PmsSkuInfo.class);
+        }else{
+            // 如果缓存中没有，查询mysql
 
-        //查询缓存
+            // 设置分布式锁
+            String OK = jedis.set("sku:" + skuId + ":lock", "1", "nx", "px", 10);
+            if(StringUtils.isNotBlank(OK)&&OK.equals("OK")){
+                // 设置成功，有权在10秒的过期时间内访问数据库
+                pmsSkuInfo =  getSkuByIdFromDb(skuId);
+                if(pmsSkuInfo!=null){
+                    // mysql查询结果存入redis
+                    jedis.set("sku:"+skuId+":info",JSON.toJSONString(pmsSkuInfo));
+                }else{
+                    // 数据库中不存在该sku
+                    // 为了防止缓存穿透将，null或者空字符串值设置给redis
+                    jedis.setex("sku:"+skuId+":info",3,JSON.toJSONString(""));
+                }
+            }else{
+                // 设置失败，自旋（该线程在睡眠几秒后，重新尝试访问本方法）
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                return getSkuById(skuId);
+            }
+        }
+        jedis.quit();   /////////////////////////////????????????????????????????
+        jedis.close();
+        return pmsSkuInfo;
+    }
 
-        //缓存没查到 查数据库
-
-        //mysql返回给redis
+    public PmsSkuInfo getSkuByIdFromDb(String skuId) {
 
         PmsSkuInfo pmsSkuInfo = new PmsSkuInfo();
         pmsSkuInfo.setId(skuId);
@@ -77,6 +118,7 @@ public class SkuServiceImpl implements SkuService {
         pmsSkuImage.setSkuId(skuId);
         List<PmsSkuImage> pmsSkuImages = pmsSkuImageMapper.select(pmsSkuImage);
         pmsSkuInfo1.setSkuImageList(pmsSkuImages);
+
         return pmsSkuInfo1;
     }
 
@@ -84,6 +126,24 @@ public class SkuServiceImpl implements SkuService {
     public List<PmsSkuInfo> getSkuSaleAttrValueListBySpu(String productId) {
 
         List<PmsSkuInfo> pmsSkuInfoList = pmsSkuInfoMapper.selectSkuSaleAttrValueListBySpu(productId);
+        return pmsSkuInfoList;
+    }
+
+    @Override
+    public List<PmsSkuInfo> getAllSku() {
+
+        List<PmsSkuInfo> pmsSkuInfoList = pmsSkuInfoMapper.selectAll();
+
+        for (PmsSkuInfo pmsSkuInfo : pmsSkuInfoList) {
+            String skuId = pmsSkuInfo.getId();
+
+            PmsSkuAttrValue pmsSkuAttrValue = new PmsSkuAttrValue();
+            pmsSkuAttrValue.setSkuId(skuId);
+            List<PmsSkuAttrValue> select = pmsSkuAttrValueMapper.select(pmsSkuAttrValue);
+
+            pmsSkuInfo.setSkuAttrValueList(select);
+        }
+
         return pmsSkuInfoList;
     }
 
